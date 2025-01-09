@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { Card, CardContent } from "@/components/ui/card";
-import MultiStepCampaign from "@/components/campaign/_components/multi-step-campaign";
+import MultiStepCampaign from "@/components/posts/_components/multi-step-post";
 
 export default function CampaignContent() {
   return (

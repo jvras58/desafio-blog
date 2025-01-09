@@ -1,6 +1,6 @@
 "use client";
 import { containerMultiStepForm as container } from "@/constants/framer-motion";
-import { CampaignFormContext } from "@/components/campaign/_components/multi-step-campaign-config";
+import { PostFormContext } from "@/components/posts/_components/multi-step-post-config";
 import { useMultiStepForm } from "@/hooks/multi-step-form";
 import { motion } from "framer-motion";
 import { Form } from "@/components/ui/form";
@@ -13,7 +13,7 @@ interface Props extends PropsWithChildren {
 };
 
 const MultiStepForm = ({ title, description, children }: Props) => {
-  const { form, onSubmit, onErrors } = useMultiStepForm(CampaignFormContext);
+  const { form, onSubmit, onErrors } = useMultiStepForm(PostFormContext);
   return (
     <Form {...form}>
       <form onSubmit={form?.handleSubmit(onSubmit, onErrors)}>

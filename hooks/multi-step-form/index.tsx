@@ -14,9 +14,18 @@ import type { z } from "zod";
  * @throws {Error} If the form is not defined in the context.
  */
 // biome-ignore lint: must be any as it is a any object
-function useMultiStepForm<T extends UseMultiStepFormTypeOptions<any>>(context: Context<T>) {
-	const { forms, schema, currentStep, setCurrentStep, form, saveFormData } = useContext(context);
-	if (form === undefined) throw new Error("A react-hook-form must be defined");
+function useMultiStepForm<T extends UseMultiStepFormTypeOptions<any>>(FormContext: Context<T>) {
+    const context = useContext(FormContext);
+    
+    if (!context) {
+        throw new Error("useMultiStepForm must be used within a FormProvider");
+    }
+
+    const { forms, schema, currentStep, setCurrentStep, form, saveFormData } = context;
+    
+    if (form === undefined) {
+        throw new Error("A react-hook-form must be defined");
+    }
 
 	const steps = forms.length;
 

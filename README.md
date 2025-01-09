@@ -73,7 +73,7 @@ As tecnologias utilizadas são:
     │   │   │   └── ⚛ page.tsx
     │   │   └── 📁 users/
     │   │       └── ⚛ page.tsx
-    │   ├── 📁 campanhas/
+    │   ├── 📁 posts/
     │   │   ├── ⚛ page.tsx
     │   │   └── 📁 new/
     │   │       └── ⚛ page.tsx

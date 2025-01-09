@@ -11,7 +11,7 @@ import {
 import PainelLayout from "@/components/painel/painel-layout";
 import { SidebarSettings } from "@/components/sidebar/SidebarSettings";
 import { Metadata } from "next";
-import CampaignContent from "@/components/campaign/campaign-content";
+import CampaignContent from "@/components/posts/post-content";
 
 export const metadata: Metadata = {
     title: "Novo Post",  	
