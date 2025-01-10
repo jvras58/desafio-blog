@@ -11,7 +11,7 @@ import {
 import PainelLayout from "@/components/painel/painel-layout";
 import { SidebarSettings } from "@/components/sidebar/SidebarSettings";
 import { Metadata } from "next";
-import CampaignContent from "@/components/posts/post-content";
+import PostContent from "@/components/posts/post-content";
 
 export const metadata: Metadata = {
     title: "Novo Post",  	
@@ -42,7 +42,7 @@ export default function NewPostPage() {
         </BreadcrumbList>
       </Breadcrumb>
       <SidebarSettings />
-      <CampaignContent />
+      <PostContent />
     </ContentLayout>
     </PainelLayout>
   );

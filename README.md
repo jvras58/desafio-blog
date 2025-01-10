@@ -100,12 +100,12 @@ As tecnologias utilizadas são:
     │   │   ├── ⚛ user-settings-form.tsx
     │   │   ├── ⚛ users-stats.tsx
     │   │   └── ⚛ users-table.tsx
-    │   ├── 📁 campaign/
-    │   │   ├── ⚛ campaign-content.tsx
+    │   ├── 📁 posts/
+    │   │   ├── ⚛ posts-content.tsx
     │   │   └── 📁 _components/
-    │   │       ├── ⚛ campaign-form.tsx
-    │   │       ├── ⚛ multi-step-campaign-config.tsx
-    │   │       ├── ⚛ multi-step-campaign.tsx
+    │   │       ├── ⚛ posts-form.tsx
+    │   │       ├── ⚛ multi-step-posts-config.tsx
+    │   │       ├── ⚛ multi-step-posts.tsx
     │   │       ├── ⚛ step-0.tsx
     │   │       ├── ⚛ step-1.tsx
     │   │       ├── ⚛ step-2.tsx

@@ -1,14 +1,14 @@
 "use client";
 
-import CampaignForm from "./post-form";
+import PostForm from "./post-form";
 import { PostProvider } from "./multi-step-post-config";
 
-const MultiStepCampaign = () => {
+const MultiStepPost = () => {
 	return (
 		<PostProvider>
-			<CampaignForm />
+			<PostForm />
 		</PostProvider>
 	);
 };
 
-export default MultiStepCampaign;
+export default MultiStepPost;

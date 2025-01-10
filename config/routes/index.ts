@@ -15,7 +15,6 @@ export const configRoutes: ConfigRoutes = {
 	protectedRoutes: [
 		"/auth/settings",
 		"/example/editable-content",
-		"/example/multi-step-form/campaign",
 		"/dashboard",
 		"/posts",
 		"/posts/new",

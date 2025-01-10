@@ -22,7 +22,7 @@ export const containerCurrentForm = {
 	},
 };
 
-export const containerCampaignForm = {
+export const containerPostForm = {
 	hidden: {
 		opacity: 0,
 		x: -80,
