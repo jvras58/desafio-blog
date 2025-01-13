@@ -1,32 +1,33 @@
-import type { Metadata } from "next";
+"use client";
+
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { auth } from "@/auth";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { SessionProvider } from "next-auth/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-	title: "Dashboard - Painel",
-	description: "Gerado por `create next app`",
-};
 
-export default async function RootLayout({
+const queryClient = new QueryClient();
+
+export default function RootLayout({
 	children,
-}: Readonly<{
+}:  Readonly<{
 	children: React.ReactNode;
 }>) {
-	const session = await auth();
 	return (
 		<html lang="pt-BR">
-			<body className={inter.className} suppressHydrationWarning>
-				<SessionProvider session={session}>
-					<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-						{children}
-					</ThemeProvider>
+		<body className={inter.className} suppressHydrationWarning>
+				<SessionProvider>
+					<QueryClientProvider client={queryClient}>
+						<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+							{children}
+						</ThemeProvider>
+					</QueryClientProvider>
 				</SessionProvider>
-			</body>
+		</body>
 		</html>
-	);
+);
 }
