@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import PlaceholderContent from "@/components/demo/placeholder-content";
 import { ContentLayout } from "@/components/painel/content-layout";
 import {
   Breadcrumb,
@@ -13,9 +12,7 @@ import {
 import { SidebarSettings } from "@/components/sidebar/SidebarSettings";
 import PainelLayout from "@/components/painel/painel-layout";
 import { Metadata } from "next";
-import { auth } from "@/auth";
 import BlogPosts from "@/components/posts/blog-content";
-import Forbidden from "@/components/auth/forbidden";
 
 export const metadata: Metadata = {
 	title: "Posts",  	
@@ -23,14 +20,6 @@ export const metadata: Metadata = {
 };
 
 export default async function PostsPage() {
-  const session = await auth();
-    if (!session) {
-        return <Forbidden />;
-    }
-    
-    console.log("token:",session.user);
-
-    // const token = session.user.id;
   return (
     <PainelLayout>
     <ContentLayout title="Todas os Posts">
