@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { SidebarSettings } from "@/components/sidebar/SidebarSettings";
 import PainelLayout from "@/components/painel/painel-layout";
-import DashboardContent from "@/components/dashboard/dashboard-content";
+import PlaceholderContent from "@/components/demo/placeholder-content";
 
 export default function DashboardPage() {
   return (
@@ -21,7 +21,7 @@ export default function DashboardPage() {
         </BreadcrumbList>
       </Breadcrumb>
       <SidebarSettings />
-      <DashboardContent />
+      <PlaceholderContent />
     </ContentLayout>
     </PainelLayout>
   );

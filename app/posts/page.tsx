@@ -13,13 +13,24 @@ import {
 import { SidebarSettings } from "@/components/sidebar/SidebarSettings";
 import PainelLayout from "@/components/painel/painel-layout";
 import { Metadata } from "next";
+import { auth } from "@/auth";
+import BlogPosts from "@/components/posts/blog-content";
+import Forbidden from "@/components/auth/forbidden";
 
 export const metadata: Metadata = {
 	title: "Posts",  	
 	description: "Pagina de Posts",
 };
 
-export default function PostsPage() {
+export default async function PostsPage() {
+  const session = await auth();
+    if (!session) {
+        return <Forbidden />;
+    }
+    
+    console.log("token:",session.user);
+
+    // const token = session.user.id;
   return (
     <PainelLayout>
     <ContentLayout title="Todas os Posts">
@@ -39,7 +50,7 @@ export default function PostsPage() {
         </BreadcrumbList>
       </Breadcrumb>
       <SidebarSettings />
-      <PlaceholderContent />
+      <BlogPosts />
     </ContentLayout>
     </PainelLayout>
   );

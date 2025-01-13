@@ -5,7 +5,7 @@ import { mockPosts, Post } from '../../mockPosts';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 
-const BlogPostsList = () => {
+export default function BlogPosts () {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
   return (
@@ -57,5 +57,3 @@ const BlogPostsList = () => {
     </div>
   );
 };
-
-export default BlogPostsList;
