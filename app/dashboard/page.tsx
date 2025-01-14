@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/breadcrumb";
 import { SidebarSettings } from "@/components/sidebar/SidebarSettings";
 import PainelLayout from "@/components/painel/painel-layout";
-import PlaceholderContent from "@/components/demo/placeholder-content";
 import { Metadata } from "next";
+import DashboardContent from "@/components/dashboard/dashboard-content";
 
 export const metadata: Metadata = {
 	title: "Dashboard",  	
@@ -27,7 +27,7 @@ export default function DashboardPage() {
         </BreadcrumbList>
       </Breadcrumb>
       <SidebarSettings />
-      <PlaceholderContent />
+      <DashboardContent />
     </ContentLayout>
     </PainelLayout>
   );

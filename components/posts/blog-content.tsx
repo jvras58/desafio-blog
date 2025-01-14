@@ -14,7 +14,7 @@ export default function BlogPosts() {
 
   const { data: posts = [], isError }: UseQueryResult<Post[], Error> = useQuery({
     queryKey: ["posts"],
-    queryFn: () => fetchPosts(session?.user?.accessToken || ""),
+    queryFn: () => fetchPosts(session?.user?.accessToken || "", session?.user?.id),
     enabled: !!session, 
   });
 
@@ -24,7 +24,7 @@ export default function BlogPosts() {
 
   return (
     <div className="max-w-4xl mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8 text-center text-foreground">Últimas Postagens</h1>
+      <h1 className="text-3xl font-bold mb-8 text-center text-foreground">Suas Postagens</h1>
       <div className="space-y-8">
         {posts.map((post: Post) => (
           <article
