@@ -17,11 +17,6 @@ export default async function Settings() {
 		<ContentLayout title="Conta">
 		  <Breadcrumb>
 			<BreadcrumbList>
-			  <BreadcrumbItem>
-				<BreadcrumbLink asChild>
-				  <Link href="/">Home</Link>
-				</BreadcrumbLink>
-			  </BreadcrumbItem>
 			  <BreadcrumbSeparator />
 			  <BreadcrumbItem>
 				<BreadcrumbLink asChild>
