@@ -1,15 +1,19 @@
 'use client'
-
+// TODO: Pedir ajuda ao gpt para refatorar isso:
 import { useState } from "react"
 import { useForm, FormProvider } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { BasicInfoStep } from "./steps/basic-info-step"
 import { ContentStep } from "./steps/content-step"
 import { CategorizationStep } from "../_components/steps/categorization-step"
-import { postSchema, type PostFormData } from "@/schemas/auth";
-import type { CreatePostDTO } from "../../../types/post";
+import { postSchema, type PostFormData } from "@/schemas/auth"
+import type { CreatePostDTO } from "../../../types/post"
+import { createPost } from "@/services/post/postConteudo"
+import { toast } from "sonner"
 
 const INITIAL_DATA: PostFormData = {
   title: "",
@@ -26,7 +30,7 @@ const steps = [
     fields: ["title", "description"],
   },
   {
-    title: "Conteúdo",
+    title: "Conteúdo", 
     component: ContentStep,
     fields: ["content"],
   },
@@ -39,6 +43,9 @@ const steps = [
 
 export function PostForm() {
   const [currentStep, setCurrentStep] = useState(0)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const router = useRouter()
+  const { data: session } = useSession()
   
   const form = useForm<PostFormData>({
     resolver: zodResolver(postSchema),
@@ -61,17 +68,32 @@ export function PostForm() {
     setCurrentStep((prev) => Math.max(prev - 1, 0))
   }
 
-  const onSubmit = (data: PostFormData) => {
-    const createPostData: CreatePostDTO = {
-      title: data.title,
-      description: data.description,
-      content: data.content,
-      category: data.category,
-      tags: data.tags,
+  const onSubmit = async (data: PostFormData) => {
+    if (!session?.user?.accessToken) {
+      toast.error("Você precisa estar autenticado para criar um post")
+      return
     }
-    
-    // TODO: Handle form submission
-    console.log(createPostData)
+
+    try {
+      setIsSubmitting(true)
+      const createPostData: CreatePostDTO = {
+        title: data.title,
+        description: data.description,
+        content: data.content,
+        category: data.category,
+        tags: data.tags,
+      }
+      await createPost(createPostData, session.user.accessToken)
+      
+      toast.success("Post criado com sucesso!")
+      router.push('/posts')
+      router.refresh()
+    } catch (error) {
+      console.error("Erro ao criar post:", error)
+      toast.error("Erro ao criar post. Tente novamente.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const CurrentStepComponent = steps[currentStep].component
