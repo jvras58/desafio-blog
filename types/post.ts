@@ -1,3 +1,24 @@
+export type FormDataPost = {
+    basicInfo: {
+        title: string;
+        description: string;
+    };
+    content: {
+        body: string;
+    };
+    categorization: {
+        categories: string[];
+    };
+}
+
+export type StepProps = {
+    data: FormData;
+    onUpdate: (data: Partial<FormData>) => void;
+    onNext: () => void;
+    onBack?: () => void;
+}
+
+
 export interface Post {
     id: string;
     title: string;
@@ -12,7 +33,6 @@ export interface Post {
     };
 }
 
-// TODO: a fazer o postConteudo
 export interface CreatePostDTO {
     title: string;
     description: string;
@@ -20,3 +40,4 @@ export interface CreatePostDTO {
     category: string;
     tags: string[];
 }
+
