@@ -1,4 +1,5 @@
 "use client";
+// TODO: Eu acho que posso pedir para o gpt melhorar esse codigo sei lá ta muito grande talvez por exemplo o dialog possa se tornar um componente separado......
 
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -7,8 +8,10 @@ import { Post } from "@/types/post";
 import { useQuery, UseQueryResult, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchPosts } from "@/services/post/get";
 import { deletePost } from "@/services/post/delete";
+import { updatePost } from "@/services/post/update";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
+import { Button } from "../ui/button";
 
 interface Props {
   session: Session | null;
@@ -17,6 +20,8 @@ interface Props {
 export default function BlogPosts({ session: serverSession }: Props) {
   const { data: clientSession } = useSession();
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState<Partial<Post>>({});
   const queryClient = useQueryClient();
 
   const activeSession = clientSession || serverSession;
@@ -34,6 +39,16 @@ export default function BlogPosts({ session: serverSession }: Props) {
     },
   });
 
+  const updateMutation = useMutation({
+    mutationFn: ({ postId, updatedData }: { postId: string, updatedData: Partial<Post> }) => 
+      updatePost(postId, updatedData, activeSession?.user?.accessToken || ""),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      setIsEditing(false);
+      setSelectedPost(null);
+    },
+  });
+
   if (!activeSession) return <div>Você precisa estar logado para ver as postagens.</div>;
 
   if (isError) return <div>Erro ao carregar posts</div>;
@@ -41,6 +56,18 @@ export default function BlogPosts({ session: serverSession }: Props) {
   const handleDelete = (postId: string) => {
     if (confirm("Tem certeza que deseja deletar este post?")) {
       deleteMutation.mutate(postId);
+    }
+  };
+
+  const handleEdit = (post: Post) => {
+    setSelectedPost(post);
+    setEditData(post);
+    setIsEditing(true);
+  };
+
+  const handleSave = () => {
+    if (selectedPost) {
+      updateMutation.mutate({ postId: selectedPost.id, updatedData: editData });
     }
   };
 
@@ -69,41 +96,84 @@ export default function BlogPosts({ session: serverSession }: Props) {
                   <Badge key={tag} variant="outline">{tag}</Badge>
                 ))}
               </div>
-              <button
-                className="mt-4 text-red-600 hover:text-red-800"
+              <Button
+                className="mt-4 hover:text-red-800"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleDelete(post.id);
                 }}
               >
                 Deletar
-              </button>
+              </Button>
+              <Button
+                className="mt-4 ml-4 hover:text-blue-800"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleEdit(post);
+                }}
+              >
+                Editar
+              </Button>
             </div>
           </article>
         ))}
       </div>
       {selectedPost && (
-      <Dialog open={selectedPost !== null} onOpenChange={() => setSelectedPost(null)}>
-      <DialogContent className="bg-background text-foreground">
-        <DialogHeader>
-          <DialogTitle className="text-foreground">{selectedPost?.title}</DialogTitle>
-          <DialogDescription className="text-muted-foreground">
-            Por {selectedPost?.author?.name || "Desconhecido"} | {selectedPost?.category}
-          </DialogDescription>
-        </DialogHeader>
-        <div className="max-h-[60vh] overflow-y-auto mt-4 pr-2">
-          <p className="text-foreground mb-4 whitespace-pre-wrap break-words">
-            {selectedPost?.content}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {selectedPost?.tags?.map((tag) => (
-              <Badge key={tag} variant="outline">
-                {tag}
-              </Badge>
-            ))}
+      <Dialog
+        open={selectedPost !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedPost(null);
+            setIsEditing(false);
+          }
+        }}
+      >
+        <DialogContent className="bg-background text-foreground">
+          <DialogHeader>
+            <DialogTitle className="text-foreground">
+              {isEditing ? "Editar Post" : selectedPost?.title}
+            </DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              Por {selectedPost?.author?.name || "Desconhecido"} | {selectedPost?.category}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="max-h-[60vh] overflow-y-auto mt-4 pr-2">
+            {isEditing ? (
+              <div>
+                <input
+                  type="text"
+                  value={editData.title || ""}
+                  onChange={(e) => setEditData({ ...editData, title: e.target.value })}
+                  placeholder="Título"
+                  className="w-full mb-4 p-2 border border-gray-300 rounded"
+                />
+                <textarea
+                  value={editData.content || ""}
+                  onChange={(e) => setEditData({ ...editData, content: e.target.value })}
+                  placeholder="Conteúdo"
+                  className="w-full mb-4 p-2 border border-gray-300 rounded"
+                />
+                <Button
+                  className="hover:text-blue-800"
+                  onClick={handleSave}
+                >
+                  Salvar
+                </Button>
+              </div>
+            ) : (
+              <p className="text-foreground mb-4 whitespace-pre-wrap break-words">
+                {selectedPost?.content}
+              </p>
+            )}
+            <div className="flex flex-wrap gap-2 mt-4">
+              {selectedPost?.tags?.map((tag) => (
+                <Badge key={tag} variant="outline">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
           </div>
-        </div>
-      </DialogContent>
+        </DialogContent>
       </Dialog>
     )}
     </div>
