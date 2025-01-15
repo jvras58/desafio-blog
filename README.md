@@ -1,7 +1,7 @@
 # Blog - desafio Vlab
 
 ## 📖 Sobre o Projeto
-
+O projeto implementa um sistema de blog com autenticação, painel administrativo e gerenciamento de conteúdo
 
 ## 🚀 Tecnologias e Ferramentas
 
@@ -20,11 +20,33 @@ As tecnologias utilizadas são:
 | **Framework**         |                  |
 | Next.js               | v13.x.x          |
 | **Banco de Dados**    |                  |
-| prisma                 | v9.x.x           |
+| prisma                | v9.x.x           |
 | **Devtime**           |                  |
 | npm                   | v9.x.x           |
 
-### Organização do Projeto
+## 🚀 Características Principais
+##  Arquitetura e Padrões
+ - Arquitetura Moderna: Utiliza App Router do Next.js 14
+ - Server Components: Maximiza performance com React Server Components
+ - API Routes: Sistema de rotas API integrado
+ - TypeScript: Tipo seguro em toda a base de código
+ - React Hook Form: Gerenciamento avançado de formulários
+ - Zod: Validação de dados type-safe
+
+## Autenticação e Segurança
+ - NextAuth.js: Sistema de autenticação
+ - Roles e Permissões: Controle de acesso baseado em funções
+ - JWT: Tokens seguros para autenticação
+ - Middleware: Proteção de rotas sensíveis
+
+### 🏗 Arquitetura do Projeto
+- 📁 app: Rotas e páginas (Next.js 14 App Router)
+- 📁 components: Componentes React reutilizáveis
+- 📁 actions: Server Actions do Next.js
+- 📁 lib: Utilitários e configurações
+- 📁 schemas: Validações Zod
+- 📁 services: Lógica de negócios
+- 📁 prisma: Modelo de dados e migrações
 ```
     /
     ├── 📄README.md
@@ -56,8 +78,6 @@ As tecnologias utilizadas são:
     │   ├── globals.css
     │   ├── ⚛ layout.tsx
     │   ├── ⚛ not-found.tsx
-    │   ├── 📁 (site)/
-    │   │   └── ⚛ page.tsx
     │   ├── 📁 api/
     │   │   ├── 📁 auth/
     │   │   │   └── 📁 [...nextauth]/
@@ -77,13 +97,8 @@ As tecnologias utilizadas são:
     │   │   ├── ⚛ page.tsx
     │   │   └── 📁 new/
     │   │       └── ⚛ page.tsx
-    │   ├── 📁 categories/
-    │   │   └── ⚛ page.tsx
     │   ├── 📁 dashboard/
     │   │   └── ⚛ page.tsx
-    │   ├── 📁 example/
-    │   │   └── editable-content/
-    │   │       └── ⚛ page.tsx
     │   └── 📁 tags/
     │       └── ⚛ page.tsx
     ├── 📁 assets/
@@ -104,12 +119,9 @@ As tecnologias utilizadas são:
     │   │   ├── ⚛ posts-content.tsx
     │   │   └── 📁 _components/
     │   │       ├── ⚛ posts-form.tsx
-    │   │       ├── ⚛ multi-step-posts-config.tsx
-    │   │       ├── ⚛ multi-step-posts.tsx
-    │   │       ├── ⚛ step-0.tsx
-    │   │       ├── ⚛ step-1.tsx
-    │   │       ├── ⚛ step-2.tsx
-    │   │       └── ⚛ step-3.tsx
+    │   │       ├── ⚛ xxxxxxxx.tsx
+    │   │       ....
+    │   │             
     │   ├── 📁 controller/
     │   │   └── ⚛ user-content.tsx
     │   ├── 📁 demo/
@@ -135,45 +147,8 @@ As tecnologias utilizadas são:
     │   │   ├── ⚛ SidebarSettings.tsx
     │   │   └── ⚛ sidebar.tsx
     │   ├──📁  ui/
-    │   │   ├── ⚛ alert.tsx
-    │   │   ├── ⚛ avatar.tsx
-    │   │   ├── ⚛ badge.tsx
-    │   │   ├── ⚛ breadcrumb.tsx
-    │   │   ├── ⚛ button.tsx
-    │   │   ├── ⚛ card.tsx
-    │   │   ├── ⚛ chart.tsx
-    │   │   ├── ⚛ checkbox.tsx
-    │   │   ├── ⚛ collapsible.tsx
-    │   │   ├── ⚛ command.tsx
-    │   │   ├── ⚛ dialog.tsx
-    │   │   ├── ⚛ drawer.tsx
-    │   │   ├── ⚛ dropdown-menu.tsx
-    │   │   ├── ⚛ form.tsx
-    │   │   ├── ⚛ input-otp.tsx
-    │   │   ├── ⚛ input.tsx
-    │   │   ├── ⚛ label.tsx
-    │   │   ├── ⚛ popover.tsx
-    │   │   ├── ⚛ scroll-area.tsx
-    │   │   ├── ⚛ select.tsx
-    │   │   ├── ⚛ separator.tsx
-    │   │   ├── ⚛ sheet.tsx
-    │   │   ├── ⚛ sidebar.tsx
-    │   │   ├── ⚛ skeleton.tsx
-    │   │   ├── ⚛ switch.tsx
-    │   │   ├── ⚛ table.tsx
-    │   │   ├── ⚛ textarea.tsx
-    │   │   ├── ⚛ toast.tsx
-    │   │   ├── ⚛ toaster.tsx
-    │   │   ├── ⚛ tooltip.tsx
-    │   │   ├── ⚛ use-toast.ts
-    │   │   └── 📁 extension/
-    │   │       ├── 📁 editable-content/
-    │   │       │   └── ⚛ index.tsx
-    │   │       └── 📁 multi-step-form/
-    │   │           ├── ⚛ color-picker.tsx
-    │   │           ├── ⚛ multi-step-form.tsx
-    │   │           ├── ⚛ multi-step-nav-buttons.tsx
-    │   │           └── ⚛ multi-step-navbar.tsx
+    │   │   ├── ⚛ xxxx.tsx
+    │   │   ....
     ├── 📁 config/
     │   └── routes/
     │       └── 🇹 index.ts
@@ -187,8 +162,6 @@ As tecnologias utilizadas são:
     │   ├── ⚛ use-mobile.tsx
     │   ├── ⚛ 🇹 use-sidebar.ts
     │   ├── ⚛ 🇹 use-store.ts
-    │   └── 📁 multi-step-form/
-    │       └── ⚛ index.tsx
     ├── 📁 lib/
     │   ├── 🇹 db.ts
     │   ├── 🇹 menu-list.ts
@@ -198,10 +171,6 @@ As tecnologias utilizadas são:
     │   │   ├── 🇹 index.ts
     │   │   ├── 🇹 invalid-credentials.ts
     │   │   └── 🇹 user-not-found.ts
-    │   ├── 📁 mail/
-    │   │   └── 🇹 index.ts
-    │   ├── 📁 multi-step-form/
-    │   │   └── index.tsx
     │   └── 📁 route/
     │       └── 🇹 index.ts
     ├── 📁 pages/
@@ -284,7 +253,7 @@ Para rodar o projeto localmente, siga os passos abaixo:
 
 7. Visualize o Homepage:
    ```
-   http://localhost:3000
+   http://localhost:3000/dashboard
    ```
    > A página principal do dashboard será carregada
 

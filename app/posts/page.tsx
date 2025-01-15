@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import PlaceholderContent from "@/components/demo/placeholder-content";
 import { ContentLayout } from "@/components/painel/content-layout";
 import {
   Breadcrumb,
@@ -13,13 +12,14 @@ import {
 import { SidebarSettings } from "@/components/sidebar/SidebarSettings";
 import PainelLayout from "@/components/painel/painel-layout";
 import { Metadata } from "next";
+import BlogPosts from "@/components/posts/blog-content";
 
 export const metadata: Metadata = {
 	title: "Posts",  	
 	description: "Pagina de Posts",
 };
 
-export default function PostsPage() {
+export default async function PostsPage() {
   return (
     <PainelLayout>
     <ContentLayout title="Todas os Posts">
@@ -39,7 +39,7 @@ export default function PostsPage() {
         </BreadcrumbList>
       </Breadcrumb>
       <SidebarSettings />
-      <PlaceholderContent />
+      <BlogPosts />
     </ContentLayout>
     </PainelLayout>
   );

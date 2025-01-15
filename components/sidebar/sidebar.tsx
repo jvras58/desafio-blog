@@ -56,8 +56,8 @@ export function DashboardSidebar() {
                   <GalleryVerticalEnd className="size-4" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">Afiliado</span>
-                  <span className="text-xs">DKC</span>
+                  <span className="font-semibold">BLOC</span>
+                  <span className="text-xs">lABS</span>
                 </div>
               </a>
             </SidebarMenuButton>
@@ -105,9 +105,6 @@ export function DashboardSidebar() {
                 <DropdownMenuItem onClick={() => router.push('/profile')}>
                   Perfil
                 </DropdownMenuItem>
-                {/* <DropdownMenuItem onClick={() => router.push('/billing')}>
-                  Billing
-                </DropdownMenuItem> */}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
                   Sair

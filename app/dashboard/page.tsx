@@ -1,16 +1,19 @@
-import Link from "next/link";
-
-import PlaceholderContent from "@/components/demo/placeholder-content";
 import { ContentLayout } from "@/components/painel/content-layout";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import { SidebarSettings } from "@/components/sidebar/SidebarSettings";
 import PainelLayout from "@/components/painel/painel-layout";
+import { Metadata } from "next";
+import DashboardContent from "@/components/dashboard/dashboard-content";
+
+export const metadata: Metadata = {
+	title: "Dashboard",  	
+	description: "Pagina de Dashboard",
+};
 
 export default function DashboardPage() {
   return (
@@ -24,7 +27,7 @@ export default function DashboardPage() {
         </BreadcrumbList>
       </Breadcrumb>
       <SidebarSettings />
-      <PlaceholderContent />
+      <DashboardContent />
     </ContentLayout>
     </PainelLayout>
   );

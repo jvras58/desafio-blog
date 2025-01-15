@@ -6,13 +6,6 @@ import { findUserByEmail } from "@/services";
 import { AuthError, CredentialsSignin } from "next-auth";
 import type { z } from "zod";
 
-/**
- * This method is responsible for executing the login flow.
- * @param {z.infer<typeof CredentialsSchema>} credentials - The user credentials.
- * @returns {Promise<{ error?: string, success?: string, data?: { twoFactorAuthEnabled: boolean } }>}
- * An object containing error, success, or data about two-factor authentication status,
- * or throws an error if an unexpected error occurs.
- */
 export const login = async (credentials: z.infer<typeof CredentialsSchema>) => {
     const validCredentials = await CredentialsSchema.safeParse(credentials);
     if (!validCredentials.success) {
