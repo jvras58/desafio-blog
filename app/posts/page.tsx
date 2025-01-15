@@ -13,6 +13,7 @@ import { SidebarSettings } from "@/components/sidebar/SidebarSettings";
 import PainelLayout from "@/components/painel/painel-layout";
 import { Metadata } from "next";
 import BlogPosts from "@/components/posts/blog-content";
+import { auth } from "@/auth";
 
 export const metadata: Metadata = {
 	title: "Posts",  	
@@ -20,9 +21,13 @@ export const metadata: Metadata = {
 };
 
 export default async function PostsPage() {
+  const session = await auth();
+  if (!session) {
+    return null;
+  }
   return (
     <PainelLayout>
-    <ContentLayout title="Todas os Posts">
+    <ContentLayout title="Seus Posts">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -39,7 +44,7 @@ export default async function PostsPage() {
         </BreadcrumbList>
       </Breadcrumb>
       <SidebarSettings />
-      <BlogPosts />
+      <BlogPosts session={session}/>
     </ContentLayout>
     </PainelLayout>
   );

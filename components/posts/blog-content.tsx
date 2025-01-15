@@ -3,22 +3,30 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { useSession } from "next-auth/react";
 import { Post } from "@/types/post";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { fetchPosts } from "@/services/post/getPost";
+import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 
-export default function BlogPosts() {
-  const { data: session } = useSession();
+interface Props {
+  session: Session | null;
+}
+
+export default function BlogPosts({ session: serverSession }: Props) {
+  // TODO: ainda é necessario concertar o auth no clientSession
+  const { data: clientSession } = useSession();
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+
+  const activeSession = clientSession || serverSession;
 
   const { data: posts = [], isError }: UseQueryResult<Post[], Error> = useQuery({
     queryKey: ["posts"],
-    queryFn: () => fetchPosts(session?.user?.accessToken || "", session?.user?.id),
-    enabled: !!session, 
+    queryFn: () => fetchPosts(activeSession?.user?.accessToken || "", activeSession?.user?.id),
+    enabled: !!activeSession, 
   });
 
-  if (!session) return <div>Você precisa estar logado para ver as postagens.</div>;
+  if (!activeSession) return <div>Você precisa estar logado para ver as postagens.</div>;
 
   if (isError) return <div>Erro ao carregar posts</div>;
 
@@ -53,25 +61,30 @@ export default function BlogPosts() {
       </div>
 
       {selectedPost && (
-        <Dialog open={selectedPost !== null} onOpenChange={() => setSelectedPost(null)}>
-          <DialogContent className="bg-background text-foreground">
-            <DialogHeader>
-              <DialogTitle className="text-foreground">{selectedPost?.title}</DialogTitle>
-              <DialogDescription className="text-muted-foreground">
-                Por {selectedPost?.author?.name || "Desconhecido"} | {selectedPost?.category}
-              </DialogDescription>
-            </DialogHeader>
-            <div className="mt-4">
-              <p className="text-foreground mb-4">{selectedPost?.content}</p>
-              <div className="flex flex-wrap gap-2">
-                {selectedPost?.tags?.map((tag) => (
-                  <Badge key={tag} variant="outline">{tag}</Badge>
-                ))}
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
+      <Dialog open={selectedPost !== null} onOpenChange={() => setSelectedPost(null)}>
+      <DialogContent className="bg-background text-foreground">
+        <DialogHeader>
+          <DialogTitle className="text-foreground">{selectedPost?.title}</DialogTitle>
+          <DialogDescription className="text-muted-foreground">
+            Por {selectedPost?.author?.name || "Desconhecido"} | {selectedPost?.category}
+          </DialogDescription>
+        </DialogHeader>
+        <div className="max-h-[60vh] overflow-y-auto mt-4 pr-2">
+          <p className="text-foreground mb-4 whitespace-pre-wrap break-words">
+            {selectedPost?.content}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {selectedPost?.tags?.map((tag) => (
+              <Badge key={tag} variant="outline">
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      </DialogContent>
+
+      </Dialog>
+    )}
     </div>
   );
 }
