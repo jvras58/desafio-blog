@@ -1,12 +1,12 @@
 import React from "react";
 import type { SVGProps } from "react";
 
-export function LineMdCogLoop(props: SVGProps<SVGSVGElement>) {
+export function CogLoop(props: SVGProps<SVGSVGElement>) {
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="2em" viewBox="0 0 24 24" {...props}>
-			<title>LineMdCogLoop</title>
+			<title>CogLoop</title>
 			<defs>
-				<symbol id="lineMdCogLoop0">
+				<symbol id="CogLoop0">
 					<path
 						fill="none"
 						strokeWidth={2}
@@ -43,12 +43,12 @@ export function LineMdCogLoop(props: SVGProps<SVGSVGElement>) {
 					</path>
 				</g>
 				<g opacity={0}>
-					<use href="#lineMdCogLoop0" />
-					<use href="#lineMdCogLoop0" transform="rotate(60 12 12)" />
-					<use href="#lineMdCogLoop0" transform="rotate(120 12 12)" />
-					<use href="#lineMdCogLoop0" transform="rotate(180 12 12)" />
-					<use href="#lineMdCogLoop0" transform="rotate(240 12 12)" />
-					<use href="#lineMdCogLoop0" transform="rotate(300 12 12)" />
+					<use href="#CogLoop0" />
+					<use href="#CogLoop0" transform="rotate(60 12 12)" />
+					<use href="#CogLoop0" transform="rotate(120 12 12)" />
+					<use href="#CogLoop0" transform="rotate(180 12 12)" />
+					<use href="#CogLoop0" transform="rotate(240 12 12)" />
+					<use href="#CogLoop0" transform="rotate(300 12 12)" />
 					<set attributeName="opacity" begin="0.7s" to={1} />
 					<animateTransform
 						attributeName="transform"
