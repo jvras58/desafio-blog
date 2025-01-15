@@ -4,8 +4,9 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Post } from "@/types/post";
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { useQuery, UseQueryResult, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchPosts } from "@/services/post/get";
+import { deletePost } from "@/services/post/delete";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 
@@ -14,9 +15,9 @@ interface Props {
 }
 
 export default function BlogPosts({ session: serverSession }: Props) {
-  // TODO: ainda é necessario concertar o auth no clientSession
   const { data: clientSession } = useSession();
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const queryClient = useQueryClient();
 
   const activeSession = clientSession || serverSession;
 
@@ -26,9 +27,22 @@ export default function BlogPosts({ session: serverSession }: Props) {
     enabled: !!activeSession, 
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: (postId: string) => deletePost(postId, activeSession?.user?.accessToken || ""),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+
   if (!activeSession) return <div>Você precisa estar logado para ver as postagens.</div>;
 
   if (isError) return <div>Erro ao carregar posts</div>;
+
+  const handleDelete = (postId: string) => {
+    if (confirm("Tem certeza que deseja deletar este post?")) {
+      deleteMutation.mutate(postId);
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto py-8">
@@ -55,11 +69,19 @@ export default function BlogPosts({ session: serverSession }: Props) {
                   <Badge key={tag} variant="outline">{tag}</Badge>
                 ))}
               </div>
+              <button
+                className="mt-4 text-red-600 hover:text-red-800"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(post.id);
+                }}
+              >
+                Deletar
+              </button>
             </div>
           </article>
         ))}
       </div>
-
       {selectedPost && (
       <Dialog open={selectedPost !== null} onOpenChange={() => setSelectedPost(null)}>
       <DialogContent className="bg-background text-foreground">
