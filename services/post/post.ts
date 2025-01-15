@@ -1,6 +1,5 @@
 import { CreatePostDTO, Post } from "@/types/post";
 
-// TODO: a fazer o postConteudo
 export async function createPost(post: CreatePostDTO, token: string): Promise<Post> {
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     try {

@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Badge } from "@/components/ui/badge";
 import { Post } from "@/types/post";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { fetchPosts } from "@/services/post/getPost";
+import { fetchPosts } from "@/services/post/get";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 
@@ -82,7 +82,6 @@ export default function BlogPosts({ session: serverSession }: Props) {
           </div>
         </div>
       </DialogContent>
-
       </Dialog>
     )}
     </div>

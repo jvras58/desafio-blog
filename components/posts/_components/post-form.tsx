@@ -12,7 +12,7 @@ import { ContentStep } from "./steps/content-step"
 import { CategorizationStep } from "../_components/steps/categorization-step"
 import { postSchema, type PostFormData } from "@/schemas/auth"
 import type { CreatePostDTO } from "../../../types/post"
-import { createPost } from "@/services/post/postConteudo"
+import { createPost } from "@/services/post/post"
 import { toast } from "sonner"
 
 const INITIAL_DATA: PostFormData = {
