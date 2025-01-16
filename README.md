@@ -232,32 +232,24 @@ Para rodar o projeto localmente, siga os passos abaixo:
 
 3. Configure o arquivo `.env` na raiz do projeto com suas credenciais use o arquivo `env-example`
 
-
-4. Execute as migrações do banco de dados utilizando o Prisma:
+4. Sincronize o banco de dados:
    ```bash
-   npm run migrate
+   npm run db:push
    ```
-   > Isso aplicará todas as alterações definidas no arquivo `schema.prisma`
 
-5. Popule o banco de dados com dados iniciais:
-   ```bash
-   npm run seed
-   ```
-   > Esta etapa criará registros básicos necessários para testar a aplicação
-
-6. Inicie o ambiente de desenvolvimento:
+5. Inicie o ambiente de desenvolvimento:
    ```bash
    npm run dev
    ```
    > O servidor será iniciado em modo de desenvolvimento com hot-reload
 
-7. Visualize o Homepage:
+6. Visualize o Homepage:
    ```
    http://localhost:3000/dashboard
    ```
    > A página principal do dashboard será carregada
 
-8. Para acessar a áreas restritas como o dashboard:
+7. Para acessar a áreas restritas como o dashboard:
    ```
    http://localhost:3000/auth/login
    ```
@@ -273,17 +265,6 @@ Para rodar o projeto localmente, siga os passos abaixo:
 
 ## 💻 Funcionalidades Principais
 
-
-## 🔧 Como Contribuir
-
-1. Faça um **fork** do repositório.
-2. Crie uma nova branch:  
-   `git checkout -b minha-nova-rota`
-3. Faça suas alterações e comite:  
-   `git commit -am 'Adiciona nova funcionalidade'`
-4. Envie as alterações para o seu repositório remoto:  
-   `git push origin minha-nova-rota`
-5. Abra um **pull request** explicando as modificações realizadas.
 
 ## 📝 CHECKLIST:
 
