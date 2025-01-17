@@ -12,8 +12,8 @@ export type FormDataPost = {
 }
 
 export type StepProps = {
-    data: FormData;
-    onUpdate: (data: Partial<FormData>) => void;
+    data: FormDataPost;
+    onUpdate: (data: Partial<FormDataPost>) => void;
     onNext: () => void;
     onBack?: () => void;
 }

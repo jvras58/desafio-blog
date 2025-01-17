@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import type { StepProps } from "../../types/form"
+import { StepProps } from "@/types/post"
 
 export function BasicInfoStep({ data, onUpdate, onNext }: StepProps) {
   return (

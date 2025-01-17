@@ -1,7 +1,7 @@
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import type { StepProps } from "../../types/form"
+import { StepProps } from "@/types/post"
 
 export function ContentStep({ data, onUpdate, onNext, onBack }: StepProps) {
   return (

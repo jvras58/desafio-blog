@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import type { StepProps } from "../../types/form"
+import { StepProps } from "@/types/post"
 
 export function CategorizationStep({ data, onUpdate, onBack }: StepProps) {
   return (

@@ -19,7 +19,6 @@ export const findUserById = async (id: string) => {
       name: true,
       email: true,
       password: true,
-      isTwoFactorAuthEnabled: true,
     },
   });
   return user;
