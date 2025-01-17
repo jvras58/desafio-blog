@@ -46,7 +46,6 @@ As tecnologias utilizadas são:
 - 📁 lib: Utilitários e configurações
 - 📁 schemas: Validações Zod
 - 📁 services: Lógica de negócios
-- 📁 prisma: Modelo de dados e migrações
 ```
     /
     ├── 📄README.md
@@ -107,14 +106,7 @@ As tecnologias utilizadas são:
     │   ├── 📁 auth/
     │   │   ├── ⚛ auth-card.tsx
     │   │   ├── ⚛ auth-form-message.tsx
-    │   │   ├── ⚛ forbidden.tsx
-    │   │   ├── ⚛ login-button.tsx
-    │   │   ├── ⚛ login-form.tsx
-    │   │   ├── ⚛ logout-button.tsx
-    │   │   ├── ⚛ register-form.tsx
-    │   │   ├── ⚛ user-settings-form.tsx
-    │   │   ├── ⚛ users-stats.tsx
-    │   │   └── ⚛ users-table.tsx
+    |   |   ...
     │   ├── 📁 posts/
     │   │   ├── ⚛ posts-content.tsx
     │   │   └── 📁 _components/
@@ -131,14 +123,7 @@ As tecnologias utilizadas são:
     │   ├──📁  painel/
     │   │   ├── ⚛ collapse-menu-button.tsx
     │   │   ├── ⚛ content-layout.tsx
-    │   │   ├── ⚛footer.tsx
-    │   │   ├── ⚛ menu.tsx
-    │   │   ├── ⚛ navbar.tsx
-    │   │   ├── ⚛ painel-layout.tsx
-    │   │   ├── ⚛ sheet-menu.tsx
-    │   │   ├── ⚛ sidebar-toggle.tsx
-    │   │   ├── ⚛ sidebar.tsx
-    │   │   └── ⚛ user-nav.tsx
+    |   |   ...
     │   ├──📁  providers/
     │   │   └── ⚛ theme-provider.tsx
     │   ├──📁  settings/
@@ -148,7 +133,7 @@ As tecnologias utilizadas são:
     │   │   └── ⚛ sidebar.tsx
     │   ├──📁  ui/
     │   │   ├── ⚛ xxxx.tsx
-    │   │   ....
+    │   │   ...
     ├── 📁 config/
     │   └── routes/
     │       └── 🇹 index.ts
@@ -158,10 +143,7 @@ As tecnologias utilizadas são:
     ├── 📁 hooks/
     │   ├── ⚛ use-current-role.tsx
     │   ├── ⚛ use-current-user.tsx
-    │   ├── ⚛ use-media-query.tsx
-    │   ├── ⚛ use-mobile.tsx
-    │   ├── ⚛ 🇹 use-sidebar.ts
-    │   ├── ⚛ 🇹 use-store.ts
+    |   ...
     ├── 📁 lib/
     │   ├── 🇹 db.ts
     │   ├── 🇹 menu-list.ts
@@ -181,13 +163,6 @@ As tecnologias utilizadas são:
     │       ├── about.mdx
     │       ├── checklist.mdx
     │       └── index.mdx
-    ├── 📁 prisma/
-    │   ├── {} schema.prisma
-    │   ├── 🇹 seed.ts
-    │   └── 📁 migrations/
-    │       ├── migration_lock.toml
-    │       └── xxxxxxxxxxx_init/
-    │           └── migration.sql
     ├── 📁 public/
     │   ├── 📁 assets/
     │   └── 📁 images/
