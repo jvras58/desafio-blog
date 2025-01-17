@@ -68,11 +68,10 @@ export default function UsersTable({ users : initialUsers}: Props) {
 					</TableHeader>
 					<TableBody>
 						{users.length > 0 &&
-							users.map(({ id, name, email, emailVerified, role }) => (
+							users.map(({ id, name, email, role }) => (
 								<TableRow key={id}>
 									<TableCell>{name}</TableCell>
 									<TableCell>{email}</TableCell>
-									<TableCell>{emailVerified ? <Check color="#22c55e" /> : <ShieldAlert color="#eab308" />}</TableCell>
 									<TableCell>{role}</TableCell>
 
 									<TableCell>

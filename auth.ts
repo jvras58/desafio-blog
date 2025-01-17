@@ -32,10 +32,6 @@ export const {
                 // console.log("📧 Verificando email:", user.email);
                 const registeredUser = await findUserByEmail(user?.email);
                 // console.log("👤 Usuário encontrado:", registeredUser);
-                if (!registeredUser?.emailVerified) {
-                    // console.log("❌ Email não verificado");
-                    return false;
-                }
             }
             return true;
         },
