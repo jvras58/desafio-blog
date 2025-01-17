@@ -262,6 +262,11 @@ Para rodar o projeto localmente, siga os passos abaixo:
 📝 **Observação**: Certifique-se de que todas as variáveis de ambiente estejam configuradas corretamente no arquivo 
 .env antes de iniciar a aplicação.
 
+## Iniciar pelo docker:
+   ```bash
+   docker compose up --build
+   ```
+
 
 ## 💻 Funcionalidades Principais
 

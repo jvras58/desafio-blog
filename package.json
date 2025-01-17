@@ -8,7 +8,6 @@
 		"start": "next start",
 		"db:clear": "prisma migrate reset -f",
 		"db:push": "prisma db push --force-reset --accept-data-loss",
-		"postinstall": "prisma generate",
 		"lint": "npx @biomejs/biome lint ./",
 		"lint-ap ply": "npx @biomejs/biome lint ./ --apply",
 		"format": "npx @biomejs/biome format ./",
