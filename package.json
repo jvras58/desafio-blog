@@ -4,6 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
+		"postinstall": "prisma generate && npx prisma db push --force-reset --accept-data-loss",
 		"build": "next build",
 		"start": "next start",
 		"db:clear": "prisma migrate reset -f",
