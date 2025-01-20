@@ -60,7 +60,7 @@ export default function LoginForm() {
 					setSuccess(resp.success);
 					setError("");
 					form.reset();
-					router.push(process.env.NEXT_PUBLIC_AUTH_LOGIN_REDIRECT || "/");
+					router.push(process.env.NEXT_PUBLIC_AUTH_LOGIN_REDIRECT || "/dashboard");
 					return;
 				}
 
