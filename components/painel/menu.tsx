@@ -16,6 +16,7 @@ import {
   TooltipContent,
   TooltipProvider
 } from "@/components/ui/tooltip";
+import { useSession } from "next-auth/react";
 
 interface MenuProps {
   isOpen: boolean | undefined;
@@ -26,7 +27,9 @@ export function Menu({ isOpen }: MenuProps) {
   const menuList = getMenuList(pathname);
   // FIXME: infelizmente usecurrentrole está infrentando o mesmo problema lá do navbar ele so consegue pegar a sessão depois de um refresh
   const userRole = useCurrentRole();
-
+  // TODO: Tentando corrigir o usessesion seguindo a documentação: (https://authjs.dev/getting-started/authentication/credentials?framework=)
+  const { data: session } = useSession();
+  console.log(session)
   const hasPermission = (item: { isPadrao?: boolean; isAdmin?: boolean }) => {
     if (item.isPadrao) return true;
     if (item.isAdmin) return userRole === "ADMIN";
