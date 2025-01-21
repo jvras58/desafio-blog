@@ -1,89 +1,87 @@
-// TODO: Tentando corrigir o usessesion seguindo a documentação: (https://authjs.dev/getting-started/authentication/credentials?framework=)
-import NextAuth from "next-auth"
-import Credentials from "next-auth/providers/credentials"
-import { findUserByEmail } from "./services"
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { UserRole } from "@prisma/client";
+import NextAuth from "next-auth";
+import authConfig from "./auth.config";
+import { prisma } from "./lib/db";
+import { findUserByEmail } from "./services";
+import { SignJWT } from 'jose';
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
-    providers: [
-        Credentials({
-          credentials: {
-            email: {},
-            password: {},
-          },
-          authorize: async (credentials) => {
-            console.log("Autorizando", { credentials })
-            try {
-              // Validar formato das credenciais
-              if (!credentials?.email || !credentials?.password) {
-                console.log("Credenciais faltando", { credentials })
-                throw new Error("Email e senha são obrigatórios")
-              }
-    
-              const user = await findUserByEmail(credentials.email as string)
-              console.log("Usuário encontrado:", !!user)
-    
-              if (!user) {
-                throw new Error("Email não encontrado")
-              }
-
-              // Log do usuário retornado
-              const returnUser = {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                role: user.role
-              }
-              console.log("Usuário autenticado:", returnUser)
-              
-              return returnUser
-            } catch (error) {
-              console.error("Erro na autenticação:", error)
-              throw new Error(error instanceof Error ? error.message : "Erro na autenticação")
+export const {
+    handlers: { GET, POST },
+    auth,
+    signIn,
+    signOut,
+    unstable_update: update,
+} = NextAuth({
+    adapter: PrismaAdapter(prisma),
+    session: {
+        strategy: "jwt",
+    },
+    pages: {
+        signIn: "/auth/login",
+    },
+    callbacks: {
+        async signIn({ user, account}) {
+            // console.log("🔐 SignIn Callback:", { user, account });
+            
+            if (account) {
+                // console.log("📱 Conta OAuth encontrada:", account);
+                return true;
             }
-          },
-        }),
-      ],
-  callbacks: {
-    jwt({ token, user }) {
-      if (user) {
-        token.id = user.id
-        token.email = user.email
-        token.name = user.name
-      }
-      return token
-    },
-    session({ session, token }) {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id as string,
-          email: token.email as string, 
-          name: token.name as string,
-          role: token.role as string
+            if (user.email) {
+                // console.log("📧 Verificando email:", user.email);
+                const registeredUser = await findUserByEmail(user?.email);
+                // console.log("👤 Usuário encontrado:", registeredUser);
+            }
+            return true;
         },
-      }
-    },
-  },
-  pages: {
-    signIn: '/auth/login',
-    error: '/auth/error'
-  },
-  session: {
-    strategy: "jwt",
-    maxAge: 24 * 60 * 60,
-    updateAge: 1 * 60 * 60,
-  },
-})
+        async jwt({ token, user, trigger, session }) {
+            // console.log("🎫 JWT Callback:", { token, user, trigger, session });
+            
+            if (trigger && trigger === "update" && session) {
+                console.log("🔄 Token update trigger");
+                return token;
+            }
+            if (user) {
+                // console.log("👤 Buscando usuário no banco");
+                const dbUser = user.email ? await findUserByEmail(user.email) : null;
+                // console.log("📄 Dados do usuário:", dbUser);
+                token.role = dbUser?.role ?? UserRole.DEFAULT;
+            	// Criar um JWT assinado para uso como Bearer token
+				const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
+				const bearerToken = await new SignJWT({
+					sub: token.sub,
+					email: token.email,
+					name: token.name,
+					role: token.role
+				})
+				.setProtectedHeader({ alg: 'HS256' })
+				.setIssuedAt()
+				.setExpirationTime('24h')
+				.sign(secret);
 
-// types/next-auth.d.ts
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string
-      email: string
-      name: string
-      role: string
-    }
-  }
-}
+				token.accessToken = bearerToken;
+			}
+			// Adicionando o token completo
+            return token;
+        },
+        session({ session, token }) {
+            // console.log("📍 Session Callback:", { session, token });
+            
+            if (session.user && token.sub) {
+                session.user.id = token.sub;
+            }
+            const enhancedSession = {
+                ...session,
+                user: {
+                    ...session.user,
+                    role: token.role,
+					accessToken: token.accessToken
+                },
+            };
+            // console.log("✅ Sessão final:", enhancedSession);
+            return enhancedSession;
+        },
+    },
+    ...authConfig,
+});
