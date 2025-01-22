@@ -1,9 +1,8 @@
 "use client";
-
+// TODO: Modificado aqui: 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import AuthCard from "./auth-card";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -12,6 +11,8 @@ import { LoaderIcon } from "lucide-react";
 import AuthFormMessage from "./auth-form-message";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
+import { toast } from "../ui/use-toast";
+import { signIn } from "next-auth/react"
 
 interface LoginFormValues {
   email: string;
@@ -24,35 +25,41 @@ export default function LoginForm() {
       email: "",
       password: "",
     },
+  
   });
 
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
 
-  async function onSubmit(values: LoginFormValues) {
-    setIsPending(true);
-    setError(null);
 
+  const {push} = useRouter()
+
+  const handleSubmit = async (values: { email: string; password: string }) => {
+    setIsPending(true);
     const result = await signIn("credentials", {
       redirect: false,
       email: values.email,
       password: values.password,
     });
-
-    setIsPending(false);
-
+    console.log(result)
     if (result?.error) {
-      setError("Falha no login: " + result.error);
-    } else {
-      redirect("/dashboard");
+      setIsPending(false);
+      toast({
+        title: "Erro ao fazer login",
+        description: "E-mail ou senha inválidos",
+        variant: "destructive",
+      });
+    } else if (result?.ok) {
+      console.log("result:", result);
+      push("/dashboard");
     }
-  }
+  };
 
   return (
     <AuthCard title="Conecte-se" description="Seja bem-vindo novamente">
       <div className="space-y-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form onSubmit={form.handleSubmit(handleSubmit)}>
             <div className="space-y-4">
               <FormField
                 control={form.control}

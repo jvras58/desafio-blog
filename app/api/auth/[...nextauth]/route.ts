@@ -1,2 +1,3 @@
-export const runtime = 'nodejs';
-export { GET, POST } from "@/auth";
+// TODO: Modificado aqui:
+import { handlers } from "@/auth"
+export const { GET, POST } = handlers
