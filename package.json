@@ -57,7 +57,7 @@
 		"nextra": "^3.3.1",
 		"nextra-theme-docs": "^3.3.1",
 		"quick-lru": "^7.0.0",
-		"react": "^18",
+		"react": "18",
 		"react-colorful": "^5.6.1",
 		"react-dom": "^18",
 		"react-email": "^3.0.4",
