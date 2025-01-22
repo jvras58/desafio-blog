@@ -12,14 +12,11 @@ import { LoaderIcon } from "lucide-react";
 import AuthFormMessage from "./auth-form-message";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
+import type { z } from "zod";
+import { CredentialsSchema } from "@/schemas/auth";
 
 export default function LoginForm() {
-  const form = useForm<LoginFormValues>({
+  const form = useForm<z.infer<typeof CredentialsSchema>>({
     defaultValues: {
       email: "",
       password: "",
@@ -31,7 +28,7 @@ export default function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
 
-  async function onSubmit(values: LoginFormValues) {
+  async function onSubmit(values: z.infer<typeof CredentialsSchema>) {
     setIsPending(true);
     setError(null);
 
@@ -45,8 +42,10 @@ export default function LoginForm() {
 
     if (result?.error) {
       setError("Falha no login: " + result.error);
+      form.reset();
     } else {
-      push("/dashboard");
+      push(process.env.NEXT_PUBLIC_AUTH_LOGIN_REDIRECT || "/dashboard");
+      
     }
   }
 
