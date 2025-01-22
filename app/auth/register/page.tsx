@@ -1,7 +1,13 @@
 import RegisterForm from "@/components/auth/register-form";
 import { ContentLayout } from "@/components/painel/content-layout";
+import type { Metadata } from "next";
 
-const Login = async () => {
+export const metadata: Metadata = {
+	title: "Registre-se",
+	description: "Página de Registro",
+};
+
+const Register = async () => {
 	return (
 		<ContentLayout title="Cadastro" showUserNav={false}>
 		<div className="flex flex-col w-full min-h-full items-center justify-center">
@@ -13,4 +19,4 @@ const Login = async () => {
 	);
 };
 
-export default Login;
+export default Register;
