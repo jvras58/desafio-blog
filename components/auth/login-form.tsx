@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import type { z } from "zod";
 import { CredentialsSchema } from "@/schemas/auth";
+import { errorMessages } from "@/schemas/errorMessages";
 
 export default function LoginForm() {
   const form = useForm<z.infer<typeof CredentialsSchema>>({
@@ -41,11 +42,11 @@ export default function LoginForm() {
     setIsPending(false);
 
     if (result?.error) {
-      setError("Falha no login: " + result.error);
+      const errorMessage = errorMessages[result.error as keyof typeof errorMessages] || errorMessages.default;
+      setError(errorMessage);
       form.reset();
     } else {
       push(process.env.NEXT_PUBLIC_AUTH_LOGIN_REDIRECT || "/dashboard");
-      
     }
   }
 
