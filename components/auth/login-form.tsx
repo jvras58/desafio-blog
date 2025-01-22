@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import AuthCard from "./auth-card";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -26,7 +26,7 @@ export default function LoginForm() {
     },
   });
 
-  const { push} = useRouter();
+  const { push } = useRouter();
 
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
