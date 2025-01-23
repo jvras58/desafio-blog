@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import type { PostFormData } from "@/schemas/auth"
+import type { PostFormData } from "@/schemas/post"
 
 export function ContentStep() {
   const { control } = useFormContext<PostFormData>()
