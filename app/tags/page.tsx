@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import PlaceholderContent from "@/components/demo/placeholder-content";
 import { ContentLayout } from "@/components/painel/content-layout";
 import {
   Breadcrumb,
@@ -13,6 +12,7 @@ import {
 import PainelLayout from "@/components/painel/painel-layout";
 import { SidebarSettings } from "@/components/sidebar/SidebarSettings";
 import { Metadata } from "next";
+import TagContent from "@/components/tags/tags-content";
 
 export const metadata: Metadata = {
   title: "Tags",  	
@@ -37,7 +37,7 @@ export default function TagsPage() {
         </BreadcrumbList>
       </Breadcrumb>
       <SidebarSettings />
-      <PlaceholderContent />
+      <TagContent />
     </ContentLayout>
     </PainelLayout>
   );
