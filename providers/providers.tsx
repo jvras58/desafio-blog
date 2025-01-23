@@ -14,11 +14,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
     return new QueryClient({
       defaultOptions: {
         queries: {
-          staleTime: 2 * 60 * 60 * 1000,
+          staleTime: 0, 
           gcTime: 3 * 60 * 60 * 1000,
-          refetchOnWindowFocus: false,
-          refetchOnMount: false,
-          refetchOnReconnect: false,
+          refetchOnWindowFocus: true,
+          refetchOnMount: true,
+          refetchOnReconnect: true,
         },
       },
     });
