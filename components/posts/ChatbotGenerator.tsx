@@ -48,7 +48,7 @@ export function ChatbotPostGeneratorModal() {
       })
     }
   }, [setValue])
-
+  // TODO: Configurar toast ou remover é colocar outra coisa....
   const onSubmit = async (data: ChatbotFormData) => {
     if (!session?.user?.accessToken) {
       toast.error("Você precisa estar autenticado para gerar um post")
