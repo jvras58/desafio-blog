@@ -10,4 +10,11 @@ export const postSchema = z.object({
 
 export type PostFormData = z.infer<typeof postSchema>
 
-
+export const chatbotSchema = z.object({
+    title: z.string().min(1, "Título é obrigatório"),
+    description: z.string().optional(),
+    content: z.string().optional(),
+    category: z.string().optional(),
+    tags: z.string().optional(),
+  })
+export type ChatbotFormData = z.infer<typeof chatbotSchema>
