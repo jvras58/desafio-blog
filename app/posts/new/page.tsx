@@ -12,6 +12,7 @@ import PainelLayout from "@/components/painel/painel-layout";
 import { SidebarSettings } from "@/components/sidebar/SidebarSettings";
 import { Metadata } from "next";
 import { PostForm } from "@/components/posts/_components/post-form";
+import { ChatbotPostGeneratorModal } from "@/components/posts/ChatbotGenerator";
 
 
 export const metadata: Metadata = {
@@ -42,6 +43,10 @@ export default function NewPostPage() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+      <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold">Criar Novo Post</h1>
+          <ChatbotPostGeneratorModal />
+        </div>      
       <SidebarSettings />
       <PostForm />
     </ContentLayout>
