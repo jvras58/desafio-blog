@@ -1,3 +1,5 @@
-export const runtime = 'edge'; // npm install bcrypt-ts
+
+// TODO: Em dev deixar commentado, em prod descomentar...
+// export const runtime = 'edge'; // npm install bcrypt-ts
 // TODO: em dev fica dando erro por não conseguir rodar no edge runtime...
 export { GET, POST } from "@/auth";

@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -33,24 +32,20 @@ const INITIAL_DATA: ChatbotFormData = {
 }
 
 export function ChatbotPostGeneratorModal() {
-  const [step, setStep] = useState(0)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [generatedContent, setGeneratedContent] = useState<ChatbotFormData | null>(null)
   const [isOpen, setIsOpen] = useState(false)
-  const router = useRouter()
   const { data: session } = useSession()
 
-  const { register, handleSubmit, setValue, watch, reset } = useForm<ChatbotFormData>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ChatbotFormData>({
     resolver: zodResolver(chatbotSchema),
     defaultValues: INITIAL_DATA,
   })
-
-  const questions = [
-    "Qual título você tem em mente para a postagem?",
-    "Descreva brevemente o conteúdo da postagem:",
-    "Qual o conteúdo principal da postagem?",
-    "Em qual categoria esta postagem se encaixa?",
-    "Quais tags você gostaria de associar a esta postagem? (separadas por vírgula)",
-  ]
 
   const onSubmit = async (data: ChatbotFormData) => {
     if (!session?.user?.accessToken) {
@@ -58,13 +53,9 @@ export function ChatbotPostGeneratorModal() {
       return
     }
 
-    if (step < questions.length - 1) {
-      setStep(step + 1)
-      return
-    }
-
     try {
       setIsGenerating(true)
+
       const promptData: promptUserDTO = {
         id: Date.now().toString(),
         title: data.title,
@@ -76,14 +67,17 @@ export function ChatbotPostGeneratorModal() {
 
       const result = await createContentGenAi(promptData, session.user.accessToken)
 
-      setValue("title", result.title)
-      setValue("description", result.description)
-      setValue("content", result.content)
-      setValue("category", result.category)
-      setValue("tags", result.tags.join(", "))
+      const generatedPost = {
+        title: result.title,
+        description: result.description,
+        content: result.content,
+        category: result.category,
+        tags: result.tags.join(", "),
+      }
 
-      toast.success("Post gerado com sucesso!")
-      setStep(questions.length)
+      setGeneratedContent(generatedPost)
+      localStorage.setItem("generatedPost", JSON.stringify(generatedPost))
+      toast.success("Post gerado com sucesso e salvo no localStorage!")
     } catch (error) {
       console.error("Erro ao gerar post:", error)
       toast.error("Erro ao gerar post. Tente novamente.")
@@ -92,13 +86,16 @@ export function ChatbotPostGeneratorModal() {
     }
   }
 
-  const currentValue = watch(questions[step].toLowerCase().split(" ")[0] as keyof ChatbotFormData)
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+    toast.success("Conteúdo copiado para a área de transferência!")
+  }
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open)
     if (!open) {
       reset(INITIAL_DATA)
-      setStep(0)
+      setGeneratedContent(null)
     }
   }
 
@@ -107,55 +104,45 @@ export function ChatbotPostGeneratorModal() {
       <DialogTrigger asChild>
         <Button variant="outline">Gerar Post com IA</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Gerador de Postagem</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {step < questions.length ? (
-            <>
-              <p>{questions[step]}</p>
-              {step === 2 ? (
-                <Textarea
-                  {...register(questions[step].toLowerCase().split(" ")[0] as keyof ChatbotFormData)}
-                  placeholder="Digite aqui..."
-                />
-              ) : (
-                <Input
-                  {...register(questions[step].toLowerCase().split(" ")[0] as keyof ChatbotFormData)}
-                  placeholder="Digite aqui..."
-                />
-              )}
-            </>
-          ) : (
-            <>
-              <h3 className="font-bold">Conteúdo Gerado:</h3>
-              <div>
-                <h4>Título:</h4>
-                <p>{watch("title")}</p>
-              </div>
-              <div>
-                <h4>Descrição:</h4>
-                <p>{watch("description")}</p>
-              </div>
-              <div>
-                <h4>Conteúdo:</h4>
-                <p>{watch("content")}</p>
-              </div>
-              <div>
-                <h4>Categoria:</h4>
-                <p>{watch("category")}</p>
-              </div>
-              <div>
-                <h4>Tags:</h4>
-                <p>{watch("tags")}</p>
-              </div>
-            </>
-          )}
-          <Button type="submit" disabled={isGenerating || !currentValue}>
-            {step < questions.length - 1 ? "Próximo" : step === questions.length - 1 ? "Gerar Post" : "Salvar Post"}
+          <Input {...register("title")} placeholder="Título" />
+          {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
+
+          <Textarea {...register("description")} placeholder="Descrição" />
+          {errors.description && <p className="text-red-500 text-sm">{errors.description.message}</p>}
+
+          <Textarea {...register("content")} placeholder="Conteúdo" />
+          {errors.content && <p className="text-red-500 text-sm">{errors.content.message}</p>}
+
+          <Input {...register("category")} placeholder="Categoria" />
+          {errors.category && <p className="text-red-500 text-sm">{errors.category.message}</p>}
+
+          <Input {...register("tags")} placeholder="Tags (separadas por vírgula)" />
+          {errors.tags && <p className="text-red-500 text-sm">{errors.tags.message}</p>}
+
+          <Button type="submit" disabled={isGenerating}>
+            {isGenerating ? "Gerando..." : "Gerar Post"}
           </Button>
         </form>
+
+        {generatedContent && (
+          <div className="mt-8 space-y-4">
+            <h3 className="font-bold">Conteúdo Gerado:</h3>
+            {Object.entries(generatedContent).map(([key, value]) => (
+              <div key={key} className="space-y-2">
+                <h4 className="font-semibold capitalize">{key}:</h4>
+                <p className="max-h-40 overflow-y-auto">{value}</p>
+                <Button onClick={() => copyToClipboard(value)} size="sm">
+                  Copiar
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   )
