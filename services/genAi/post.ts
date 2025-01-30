@@ -1,3 +1,4 @@
+
 export interface promptUserDTO {
     id: string;
     title: string;
@@ -8,7 +9,7 @@ export interface promptUserDTO {
 }
 
 export async function createContentGenAi(Prompt: promptUserDTO, token: string) {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const API_URL = process.env.NEXT_PUBLIC_API_URL
   
     const messages = [
       {
@@ -21,32 +22,33 @@ export async function createContentGenAi(Prompt: promptUserDTO, token: string) {
           Tags: ${Prompt.tags.join(", ")}
         `
       }
-    ];
+    ]
   
     const body = {
       messages,
       generatePost: true
-    };
+    }
   
     try {
       const response = await fetch(`${API_URL}/genAi/chat`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(body),
-      });
+      })
   
       if (!response.ok) {
-        const errorData = await response.text();
-        throw new Error(errorData);
+        const errorData = await response.text()
+        throw new Error(errorData)
       }
   
-      return await response.json();
+      return await response.json()
     } catch (err) {
-      console.error("Erro ao criar Conteudo:", err);
-      throw err;
+      console.error("Erro ao criar Conteudo:", err)
+      throw err
     }
   }
+  
   
